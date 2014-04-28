@@ -104,9 +104,16 @@
           <t>There is no verification of the origin of a payment request</t>
           <t>There is no integrity check on a payment request to prevent man-in-the-middle attacks</t>
           <t>There is no automated solution for providing refund addresses as part of a payment</t>
-          <t>The receiving user or system may have to poll to check for payments, instead of receiving notification when payment is sent</t>
+          <t>The receiving user or system may have to poll to check for payments,
+			instead of receiving notification when payment is sent</t>
         </list>
       </t>
+	  
+	  <t>
+		This document outlines a payment protocol which resolves these issues
+		by defining a sequence of messages to be exchanged between the merchant
+		server and user's client software.
+	  </t>
       
       <section title="Requirements Language">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -114,6 +121,42 @@
        document are to be interpreted as described in <xref target="RFC2119">RFC 2119</xref>.</t>
       </section>
     </section>
+	
+	<!-- Terms used -->
+	
+    <section title="Outline">
+	  <t>The payment protocol exchanges three messages between the merchant
+	  server and the wallet software:</t>
+	  <t>
+        <list style="symbols">
+          <t>PaymentRequest: Retrieved by the wallet client. Defines the
+		  amount to be paid, how payment should be made, and the endpoint
+		  to notify when payment has been sent.</t>
+          <t>Payment: Sent by the wallet client to the merchant server once
+		  payment has been sent. Specifies the transaction(s) which
+		  form the payment, as well as details of where to refund payment
+		  to if necessary.</t>
+		  <t>PaymentACK: Returned to the wallet client from the merchant
+		  server in response to the Payment message. Acknowledges receipt of
+		  the Payment message, and current state of the transactions
+		  as seen by the merchant server.</t>
+        </list>
+	  </t>
+	  <t>
+	    This document describes payment over HTTP as a transport layer.
+		Other transport layers (such as NFC) are left for future work.
+	  </t>
+	  
+	  <t>The payment protocol steps are as follows:</t>
+	  
+	  <t>
+        <list style="numbers">
+		  <t>Merchant server prompts user for payment</t>
+          <t>User initiates payment (for example opens a URL link)</t>
+        </list>
+	  </t>
+	  
+	</section>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
     </section>
