@@ -33,6 +33,7 @@
 <?rfc compact="yes" ?>
 <!-- do not start each main section on a new page -->
 <?rfc subcompact="no" ?>
+  
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
 <rfc category="info" docName="draft-dogecoin-payment-protocol-01" ipr="trust200902">
@@ -46,9 +47,10 @@
     <!-- The abbreviated title is used in the page header - it is only necessary if the 
         full title is longer than 39 characters -->
     <title abbrev="Abbreviated Title">Dogecoin Payment Protocol</title>
+    
     <!-- add 'role="editor"' below for the editors if appropriate -->
     <!-- Another author who claims to be an editor -->
-    <author fullname="J. Ross Nicoll" initials="J.R.N." role="editor" surname="Nicoll">
+    <author fullname="Ross Nicoll" initials="J.R.N." role="editor" surname="Nicoll">
       <organization>University of Edinburgh</organization>
       <address>
         <postal>
@@ -59,13 +61,11 @@
           <code/>
           <country>UK</country>
         </postal>
-	<!--
-        <phone>+44 7889 488 335</phone>
-	-->
         <email>Ross.Nicoll@ed.ac.uk</email>
-        <!-- uri and facsimile elements may also be added -->
+        <!-- phone, uri and facsimile elements may also be added -->
       </address>
     </author>
+    
     <date year="2014"/>
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
         in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -80,20 +80,34 @@
         IETF is fine for individual submissions.  
 	 If this element is not present, the default is "Network Working Group",
         which is used by the RFC Editor as a nod to the history of the IETF. -->
-    <keyword>cryptocurrency payment dogecoin</keyword>
+        
+    <keyword>cryptocurrency</keyword>
+    <keyword>payment</keyword>
+    <keyword>dogecoin</keyword>
     <!-- Keywords will be incorporated into HTML output
         files in a meta tag but they have no effect on text or nroff
         output. If you submit your draft to the RFC Editor, the
         keywords will be used for the search engine. -->
+        
     <abstract>
       <t>This document outlines a protocol and file formats for payments using Bitcoin-derived
       cryptocurrencies such as Dogecoin. This protocol is intended to simplify the payment processing
-      from the perspective of the customer, as well as reducing scope for error.</t>
+      from the perspective of the customer, as well as reducing scope for user error.</t>
     </abstract>
   </front>
   <middle>
     <section title="Introduction">
-      <t>The quick brown fox jumped over the lazy doge.</t>
+      <t>Currently cryptocurrency payment solutions suffer from a number of issues:</t>
+      <t>
+        <list style="symbols">
+          <t>They often require the user to manually cut &amp; paste the payment address and amount.</t>
+          <t>There is no verification of the origin of a payment request</t>
+          <t>There is no integrity check on a payment request to prevent man-in-the-middle attacks</t>
+          <t>There is no automated solution for providing refund addresses as part of a payment</t>
+          <t>The receiving user or system may have to poll to check for payments, instead of receiving notification when payment is sent</t>
+        </list>
+      </t>
+      
       <section title="Requirements Language">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
