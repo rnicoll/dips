@@ -60,7 +60,7 @@
           <code/>
           <country>UK</country>
         </postal>
-        <email>Ross.Nicoll@ed.ac.uk</email>
+        <email>jrn@jrn.me.uk</email>
         <!-- phone, uri and facsimile elements may also be added -->
       </address>
     </author>
@@ -68,16 +68,16 @@
     <date year="2014"/>
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
         in the current day for you. If only the current year is specified, xml2rfc will fill 
-	 in the current day and month for you. If the year is not the current one, it is 
-	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
-	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
-	 specify just the year. -->
+        in the current day and month for you. If the year is not the current one, it is 
+        necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+        purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+        specify just the year. -->
     <!-- Meta-data Declarations -->
     <area>General</area>
     <workgroup>Internet Engineering Task Force</workgroup>
     <!-- WG name at the upperleft corner of the doc,
         IETF is fine for individual submissions.  
-	 If this element is not present, the default is "Network Working Group",
+        If this element is not present, the default is "Network Working Group",
         which is used by the RFC Editor as a nod to the history of the IETF. -->
         
     <keyword>cryptocurrency</keyword>
@@ -104,58 +104,99 @@
           <t>There is no integrity check on a payment request to prevent man-in-the-middle attacks</t>
           <t>There is no automated solution for providing refund addresses as part of a payment</t>
           <t>The receiving user or system may have to poll to check for payments,
-			instead of receiving notification when payment is sent</t>
+            instead of receiving notification when payment is sent</t>
         </list>
       </t>
-	  
-	  <t>
-		This document outlines a payment protocol which resolves these issues
-		by defining a sequence of messages to be exchanged between the merchant
-		server and user's client software.
-	  </t>
+      
+      <t>
+        The Dogecoin payment protocol addresses these issues by automating much
+        of the payment negotiation process. The protocol defines a sequence of
+        messages to be exchanged between the merchant server and user's client
+        software.
+      </t>
+      
+      <t>
+        The Dogecoin payment protocol is intended for use with the Dogecoin cryptocurrency,
+        however should be usable with most Bitcoin-derived cryptocurrencies with no
+        modification.
+      </t>
       
       <section title="Requirements Language">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-       document are to be interpreted as described in <xref target="RFC2119">RFC 2119</xref>.</t>
+       document are to be interpreted as described in
+       <xref target="RFC2119">RFC 2119</xref>.</t>
+       <t>An implementation is not compliant if it fails to satisfy one or more
+       of the MUST or REQUIRED level requirements for the protocols it implements.</t>
+      </section>
+      
+      <section title="Terminology">
+        <t>This specification uses a number of terms to refer to elements of cryptocurrency
+        technology:</t>
+        <t>
+          <list style="hanging" hangIndent="6">
+            <t hangText="address">A hashed public key, which can be used as an endpoint to
+              send cryptocurrency to.</t>
+            <t hangText="blockchain">The public ledger of transactions made within a cryptocurrency.</t>
+            <t hangText="merchant server">The server of the person or organisation
+              payment is to be sent to</t>
+            <t hangText="transaction">An instruction to change ownership of coins, stored within the
+              blockchain.</t>
+            <t hangText="wallet client">The software client of the person sending payment.</t>
+          </list>
+        </t>
       </section>
     </section>
-	
-	<!-- Terms used -->
-	
+    
     <section title="Outline">
-	  <t>The payment protocol exchanges three messages between the merchant
-	  server and the wallet software:</t>
-	  <t>
-        <list style="symbols">
-          <t>PaymentRequest: Retrieved by the wallet client. Defines the
-		  amount to be paid, how payment should be made, and the endpoint
-		  to notify when payment has been sent.</t>
-          <t>Payment: Sent by the wallet client to the merchant server once
-		  payment has been sent. Specifies the transaction(s) which
-		  form the payment, as well as details of where to refund payment
-		  to if necessary.</t>
-		  <t>PaymentACK: Returned to the wallet client from the merchant
-		  server in response to the Payment message. Acknowledges receipt of
-		  the Payment message, and current state of the transactions
-		  as seen by the merchant server.</t>
+      <t>The payment protocol exchanges three messages between the merchant
+      server and the wallet software:</t>
+      <t>
+        <list style="hanging" hangIndent="6">
+          <t hangText="PaymentRequest:">Retrieved by the wallet client. Defines the
+          amount to be paid, how payment should be made, and the endpoint
+          to notify when payment has been sent.</t>
+          <t hangText="Payment:">Sent by the wallet client to the merchant server once
+          payment has been sent. Specifies the transaction(s) which
+          form the payment, as well as details of where to refund payment
+          to if necessary.</t>
+          <t hangText="PaymentACK:">Returned to the wallet client from the merchant
+          server in response to the Payment message. Acknowledges receipt of
+          the Payment message, and current state of the transactions
+          as seen by the merchant server.</t>
         </list>
-	  </t>
-	  <t>
-	    This document describes payment over HTTP as a transport layer.
-		Other transport layers (such as NFC) are left for future work.
-	  </t>
-	  
-	  <t>The payment protocol steps are as follows:</t>
-	  
-	  <t>
+      </t>
+      <t>
+        This document describes payment over HTTP as a transport layer.
+        Other transport layers (such as NFC) are left for future work.
+      </t>
+      
+      <t>The default payment protocol steps are as follows:</t>
+      
+      <t>
         <list style="numbers">
-		  <t>Merchant server prompts user for payment</t>
+          <t>Merchant server prompts user for payment</t>
           <t>User initiates payment (for example opens a URL link)</t>
+          <t>Wallet client downloads the PaymentRequest message from
+          the merchant server</t>
+          <t>Wallet client prompts user to confirm the payment</t>
+          <t>User confirms payment</t>
+          <t>Wallet client sends payment in accordance to instructions in PaymentRequest</t>
+          <t>Wallet client sends Payment message to merchant server, describing how payment was sent</t>
+          <t>Merchant server returns PaymentACK message to indicate Payment message has been received</t>
         </list>
-	  </t>
-	  
-	</section>
+      </t>
+      
+    </section>
+    
+    <section anchor="Message" title="Message Format">
+      <section anchor="PaymentRequest" title="PaymentRequest">
+      </section>
+      <section anchor="Payment" title="Payment">
+      </section>
+      <section anchor="PaymentACK" title="PaymentACK">
+      </section>
+    </section>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
     </section>
